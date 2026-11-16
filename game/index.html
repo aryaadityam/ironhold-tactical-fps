@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRONHOLD — SECTOR 9</title>
+<style>
+:root{--ink:#e9e4d2;--dim:#9a968a;--sand:#c9b18c;--olive:#7a8459;--olive-d:#454b31;--gun:rgba(16,18,20,0.88);--gun2:rgba(24,27,30,0.92);--line:rgba(201,177,140,0.38);--org:#ff8c1a;--teal:#3ec9a7;--rust:#ff6a4d;--head:"Arial Narrow","Liberation Sans Narrow","HelveticaNeue-CondensedBold",sans-serif;--data:"Consolas","Liberation Mono","Courier New",monospace}*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden;background:#101216}body{font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:var(--ink)}canvas{display:block}#hud{position:fixed;inset:0;pointer-events:none;user-select:none}.clip{clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}.panel{background:radial-gradient(circle at 11px 11px,rgba(216,190,140,0.5) 1.6px,transparent 2.4px),radial-gradient(circle at calc(100% - 11px) 11px,rgba(216,190,140,0.5) 1.6px,transparent 2.4px),radial-gradient(circle at 11px calc(100% - 11px),rgba(216,190,140,0.5) 1.6px,transparent 2.4px),radial-gradient(circle at calc(100% - 11px) calc(100% - 11px),rgba(216,190,140,0.5) 1.6px,transparent 2.4px),repeating-linear-gradient(0deg,rgba(255,255,255,0.022) 0 1px,transparent 1px 3px),linear-gradient(155deg,var(--gun2),var(--gun));border:1px solid var(--line)}.hazard{background:repeating-linear-gradient(45deg,#c9a227 0 10px,#14151a 10px 20px)}.tag{font-family:var(--head);text-transform:uppercase;letter-spacing:2.5px;font-size:10px;color:var(--sand)}#topBar{position:absolute;top:12px;left:50%;transform:translateX(-50%);text-align:center}#scoreRow{display:flex;align-items:stretch;gap:8px;justify-content:center}.teamChip{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 8px;min-width:196px}.insignia{clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:700;font-size:19px;color:#0d0f10;flex:none}#teamG .insignia{background:var(--teal)}#teamK .insignia{background:var(--rust)}.teamChip .tname{font-family:var(--head);font-size:13px;letter-spacing:3px;font-weight:700;text-align:left}#teamG .tname{color:var(--teal)}#teamK .tname{color:var(--rust)}.teamChip .trole{font-size:9px;letter-spacing:2px;color:var(--dim);text-align:left}.teamChip .tscore{font-family:var(--data);font-size:27px;font-weight:700;margin-left:auto}.pips{display:flex;gap:3px;margin-top:4px}.pips i{width:16px;height:4px;background:#33373b;transform:skewX(-18deg)}#pipsG i.on{background:var(--teal)}#pipsK i.on{background:var(--rust)}#timerBox{padding:4px 18px 6px;min-width:138px}#timer{font-family:var(--data);font-size:34px;font-weight:700;letter-spacing:1px;line-height:1.05}#timer.buy{color:var(--org)}#timer.fuse{color:#ff5147;animation:pulse 0.5s infinite alternate}@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.06)}}#roundLabel{font-family:var(--head);font-size:10.5px;letter-spacing:3.5px;color:var(--sand);margin-top:5px;text-transform:uppercase}#phaseHint{font-family:var(--head);font-size:12px;color:var(--org);margin-top:4px;min-height:15px;letter-spacing:1.5px;text-transform:uppercase}#vitals{position:absolute;left:20px;bottom:18px;padding:9px 14px 11px;min-width:248px}#vitals .vhead{display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid rgba(201,177,140,0.22);padding-bottom:5px;margin-bottom:7px}#vitals .vser{font-family:var(--data);font-size:9.5px;color:var(--dim)}#hpRow{display:flex;align-items:baseline;gap:10px}#hpText{font-family:var(--data);font-size:39px;font-weight:700;line-height:1}#hpLabel{font-family:var(--head);font-size:11px;letter-spacing:3px;color:var(--sand)}#hpBarBg{position:relative;height:8px;background:#26292c;margin:7px 0 7px;overflow:hidden}#hpFill{height:100%;background:var(--teal);transition:width 0.15s}#hpBarBg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 13px,rgba(0,0,0,0.6) 13px 15px)}#armorText{font-family:var(--data);font-size:12.5px;color:#b9c2c9;letter-spacing:0.5px}#moneyText{font-family:var(--data);font-size:19px;font-weight:700;color:#ffd479;margin-top:3px}#moneyText::before{content:"FUNDS ";font-size:9.5px;letter-spacing:2px;color:var(--dim);font-weight:400}#weaponBox{position:absolute;right:20px;bottom:18px;padding:9px 16px 11px;text-align:right;min-width:218px}#weaponBox .whead{border-bottom:1px solid rgba(201,177,140,0.22);padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between;gap:16px}#weaponName{font-family:var(--head);font-size:14px;letter-spacing:2px;color:var(--ink);font-weight:700;text-transform:uppercase}#ammoText{font-family:var(--data);font-size:37px;font-weight:700;line-height:1.1}#ammoText small{font-size:16px;color:var(--dim);font-weight:400}#ammoText .reloading{font-size:15px;color:var(--org);letter-spacing:2px;font-family:var(--head)}#nadeText{font-family:var(--data);font-size:11px;color:var(--dim);min-height:14px;letter-spacing:0.5px}#crosshair{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);transition:opacity 0.1s}#crosshair i{position:absolute;background:rgba(240,238,226,0.95);box-shadow:0 0 3px rgba(0,0,0,0.85)}#crosshair i:nth-child(1){left:10px;top:0;width:2px;height:6px}#crosshair i:nth-child(2){left:10px;bottom:0;width:2px;height:6px}#crosshair i:nth-child(3){left:0;top:10px;width:6px;height:2px}#crosshair i:nth-child(4){right:0;top:10px;width:6px;height:2px}#hitmarker{position:absolute;left:50%;top:50%;width:26px;height:26px;transform:translate(-50%,-50%) rotate(45deg);opacity:0}#hitmarker i{position:absolute;background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.7)}#hitmarker i:nth-child(1){left:0;top:0;width:8px;height:2px}#hitmarker i:nth-child(2){right:0;top:0;width:8px;height:2px}#hitmarker i:nth-child(3){left:0;bottom:0;width:8px;height:2px}#hitmarker i:nth-child(4){right:0;bottom:0;width:8px;height:2px}#hitmarker.head i{background:var(--org)}#feed{position:absolute;right:20px;top:14px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}.feedRow{padding:4px 12px;font-size:12.5px;display:flex;gap:8px;align-items:center;background:var(--gun);border:1px solid rgba(201,177,140,0.25);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}.feedRow b{font-family:var(--head);letter-spacing:1px}.feedRow b.g{color:var(--teal)}.feedRow b.k{color:var(--rust)}.feedRow span{color:var(--dim);font-family:var(--data);font-size:10.5px;letter-spacing:0.5px}#banner{position:absolute;left:50%;top:24%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity 0.3s}#bannerTitle{font-family:var(--head);font-size:48px;font-weight:700;letter-spacing:13px;text-transform:uppercase;text-shadow:0 3px 20px rgba(0,0,0,0.85)}#bannerSub{font-family:var(--head);font-size:15px;color:var(--sand);letter-spacing:2.5px;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,0.9);margin-top:5px}#bannerBar{height:5px;width:340px;margin:10px auto 0}#progressWrap{position:absolute;left:50%;bottom:24%;transform:translateX(-50%);width:350px;display:none;text-align:center}#progressLabel{font-family:var(--head);font-size:13px;letter-spacing:3px;color:var(--org);margin-bottom:6px;text-shadow:0 1px 6px #000;text-transform:uppercase}#progressBg{height:10px;background:rgba(8,9,10,0.85);border:1px solid rgba(255,140,26,0.55);overflow:hidden}#progressFill{height:100%;width:0%;background:repeating-linear-gradient(45deg,var(--org) 0 9px,#c96a08 9px 18px)}.hintChip{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--head);font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:7px 16px;opacity:0;transition:opacity 0.15s}#interactHint{bottom:31%}#interactHint b{color:var(--org)}#deathNote{bottom:34%;color:#ffb0a0;font-size:15px;transition:opacity 0.3s}#dmgDir{position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);opacity:0}#dmgDir i{position:absolute;left:50%;top:2px;width:44px;height:14px;margin-left:-22px;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 100%,rgba(255,60,40,0.85),transparent 70%)}#hurtVignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 52%,rgba(190,20,10,0.5) 100%);opacity:0}#flashOverlay{position:absolute;inset:0;background:#fff8ee;opacity:0}#scopeOverlay{position:absolute;inset:0;opacity:0;transition:opacity 0.12s;background:radial-gradient(circle at center,transparent 0 27%,rgba(0,0,0,0.97) 28.5%)}#scopeOverlay::before,#scopeOverlay::after{content:"";position:absolute;background:rgba(10,10,10,0.9)}#scopeOverlay::before{left:50%;top:22%;width:1.5px;height:56%;transform:translateX(-50%)}#scopeOverlay::after{top:50%;left:22%;height:1.5px;width:56%;transform:translateY(-50%)}#buyMenu{position:absolute;right:20px;top:46%;transform:translateY(-50%);width:308px;display:none;pointer-events:auto;padding:0 0 12px}#buyMenu .bhead{padding:10px 14px 8px;border-bottom:1px solid rgba(201,177,140,0.22)}#buyMenu h2{font-family:var(--head);font-size:15px;letter-spacing:3px;color:var(--ink);display:flex;justify-content:space-between;text-transform:uppercase}#buyMenu h2 span{color:#ffd479;font-family:var(--data);letter-spacing:0}#buyMenu .bstrip{height:4px}#buyGrid{display:flex;flex-direction:column;gap:4px;margin-top:9px;padding:0 10px}.buyCell{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);color:#767c72;padding:7px 9px;font:inherit;font-size:13px;cursor:pointer;text-align:left;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}.buyCell .buyKey{background:#2b2f2a;color:var(--sand);padding:1px 6px;font-family:var(--data);font-size:11px;font-weight:700}.buyCell .buyName{flex:1;font-family:var(--head);letter-spacing:1.2px;text-transform:uppercase;font-size:13.5px}.buyCell .buyPrice{font-family:var(--data);font-weight:700}.buyCell.afford{color:var(--ink);border-color:rgba(201,177,140,0.4)}.buyCell.afford:hover{background:rgba(255,140,26,0.16)}.buyCell.owned{color:var(--teal);border-color:rgba(62,201,167,0.5)}#buyMenu p{font-size:11px;color:var(--dim);margin:9px 14px 0;line-height:1.55}#scoreboard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:16px 22px 18px;display:none;min-width:500px}#scoreboard h2{font-family:var(--head);font-size:15px;letter-spacing:4px;color:var(--sand);margin-bottom:10px;text-align:center;text-transform:uppercase}#scoreboard table{width:100%;border-collapse:collapse;font-size:13.5px}#scoreboard th{font-family:var(--head);font-size:10.5px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;border-bottom:1px solid rgba(201,177,140,0.3)}#scoreboard td,#scoreboard th{padding:5px 10px;text-align:left}#scoreboard td{font-family:var(--data);font-size:13px}#scoreboard td:first-child{font-family:var(--head);letter-spacing:1px;font-size:14px}#scoreboard td:nth-child(n+3),#scoreboard th:nth-child(n+3){text-align:right}#scoreboard tr.g td:first-child{color:var(--teal)}#scoreboard tr.k td:first-child{color:var(--rust)}#scoreboard tr.dead{opacity:0.42}#menuOverlay{position:absolute;inset:0;pointer-events:auto;background:linear-gradient(90deg,rgba(7,9,10,0.88) 0%,rgba(7,9,10,0.62) 44%,rgba(7,9,10,0.08) 78%,rgba(7,9,10,0) 100%)}#brief{position:absolute;left:34px;top:50%;transform:translateY(-50%);width:545px;max-width:calc(100vw - 68px)}#brief .classif{display:flex;align-items:center;gap:10px}#brief .classif .hazard{width:54px;height:9px}#brief .classif span{font-family:var(--data);font-size:10.5px;letter-spacing:2px;color:var(--sand)}#menuTitle{font-family:var(--head);font-size:74px;font-weight:700;letter-spacing:13px;color:#f0ead6;line-height:1.02;margin-top:12px;text-shadow:0 4px 26px rgba(0,0,0,0.85)}#menuTitle b{color:var(--org);font-weight:700}#menuSub{font-size:14.5px;line-height:1.62;color:#cfcaba;margin-top:10px;max-width:500px;text-shadow:0 1px 8px rgba(0,0,0,0.9)}#menuSub b.g{color:var(--teal)}#menuSub b.k{color:var(--rust)}.spec{margin-top:16px;border-top:1px solid rgba(201,177,140,0.3)}.spec div{display:flex;gap:14px;padding:5px 0;border-bottom:1px solid rgba(201,177,140,0.14);font-size:12.5px}.spec dt{font-family:var(--head);letter-spacing:2.5px;font-size:11px;color:var(--sand);width:108px;flex:none;padding-top:1px}.spec dd{font-family:var(--data);font-size:12px;color:#d8d2bf}#mapBlock{margin-top:16px;padding:10px 12px 6px}#units{display:flex;gap:8px;margin-top:10px}.unit{flex:1;display:flex;align-items:center;gap:10px;padding:8px 12px}.unit .insignia{width:30px;height:30px;font-size:16px}.unit .uname{font-family:var(--head);font-weight:700;letter-spacing:3px;font-size:15px}.unit .urole{font-size:9.5px;letter-spacing:2px;color:var(--dim)}#unitG .insignia{background:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--head);color:#0d0f10}#unitK .insignia{background:var(--rust);display:flex;align-items:center;justify-content:center;font-family:var(--head);color:#0d0f10}#unitG .uname{color:var(--teal)}#unitK .uname{color:var(--rust)}#menuBtn{margin-top:22px;pointer-events:auto;position:relative;background:linear-gradient(180deg,#2a2d2a,#1b1e1c);color:var(--org);border:1px solid var(--org);font-family:var(--head);font-weight:700;letter-spacing:4px;font-size:17px;padding:14px 42px 13px;cursor:pointer;text-transform:uppercase;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}#menuBtn:hover{background:var(--org);color:#17130a}#controls{position:absolute;left:34px;bottom:22px;font-family:var(--data);font-size:11px;color:var(--dim);line-height:1.95;letter-spacing:0.3px}#controls b{color:#ddd6c2;font-weight:700}
+</style>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="hud">
+<div id="topBar">
+<div id="scoreRow">
+<div class="teamChip panel clip" id="teamG">
+<div class="insignia">G</div>
+<div><div class="tname">GARUDA</div><div class="trole">DEFEND — SECTOR 9</div><div class="pips" id="pipsG"></div></div>
+<div class="tscore" id="scoreG">0</div>
+</div>
+<div id="timerBox" class="panel clip">
+<div class="tag">Round Time</div>
+<div id="timer">1:40</div>
+</div>
+<div class="teamChip panel clip" id="teamK">
+<div class="insignia">K</div>
+<div><div class="tname">KOMODO</div><div class="trole">ASSAULT — BREACH TEAM</div><div class="pips" id="pipsK"></div></div>
+<div class="tscore" id="scoreK">0</div>
+</div>
+</div>
+<div id="roundLabel">Round 1</div>
+<div id="phaseHint"></div>
+</div>
+
+<div id="vitals" class="panel clip">
+<div class="vhead"><span class="tag">Operator Status</span><span class="vser">UNIT 9-01</span></div>
+<div id="hpRow"><span id="hpText">100</span><span id="hpLabel">HEALTH</span></div>
+<div id="hpBarBg"><div id="hpFill"></div></div>
+<div id="armorText">◈ —</div>
+<div id="moneyText">$800</div>
+</div>
+
+<div id="weaponBox" class="panel clip">
+<div class="whead"><span class="tag">Weapon</span><span class="tag" style="color:var(--dim)">IRH-ARMS</span></div>
+<div id="weaponName">P1 KESTREL</div>
+<div id="ammoText">12</div>
+<div id="nadeText"></div>
+</div>
+
+<div id="crosshair"><i></i><i></i><i></i><i></i></div>
+<div id="hitmarker"><i></i><i></i><i></i><i></i></div>
+<div id="feed"></div>
+
+<div id="banner"><div id="bannerTitle"></div><div id="bannerSub"></div><div id="bannerBar" class="hazard"></div></div>
+
+<div id="progressWrap"><div id="progressLabel"></div><div id="progressBg"><div id="progressFill"></div></div></div>
+<div id="interactHint" class="hintChip panel clip">HOLD <b>E</b> — DEFUSE CHARGE</div>
+<div id="deathNote" class="hintChip panel clip">OPERATOR DOWN — THE ROUND GOES ON WITHOUT YOU</div>
+
+<div id="dmgDir"><i></i></div>
+<div id="hurtVignette"></div>
+<div id="flashOverlay"></div>
+<div id="scopeOverlay"></div>
+
+<div id="buyMenu" class="panel clip">
+<div class="bstrip hazard"></div>
+<div class="bhead"><h2>Supply // Armory <span id="buyMoney">$800</span></h2></div>
+<div id="buyGrid"></div>
+<p>Click an item or press its number. Purchases close when the round goes live. Armor absorbs half of all incoming damage; a Defusal Kit halves defuse time.</p>
+</div>
+
+<div id="scoreboard" class="panel clip">
+<h2>Sector 9 — After-Action Board</h2>
+<table><thead><tr><th>Operator</th><th>Unit</th><th>Kills</th><th>Deaths</th><th>Funds</th></tr></thead><tbody id="sbBody"></tbody></table>
+</div>
+
+<div id="menuOverlay">
+<div id="brief">
+<div class="classif"><div class="hazard"></div><span>TACTICAL BRIEFING // EYES ONLY // OP. IRONHOLD</span></div>
+<div id="menuTitle">IRON<b>HOLD</b></div>
+<div class="hazard" style="width: 300px; height: 5px; margin-top: 8px;"></div>
+<div id="menuSub">Sector 9, Garuda Logistics yard, dusk. <b class="g">GARUDA</b> holds the crane power core against <b class="k">KOMODO</b>, a breach team carrying a hacking charge. If the charge is planted, defuse it before detonation. First unit to 7 rounds takes the sector.</div>
+<dl class="spec">
+<div><dt>Objective</dt><dd>DEFEND THE CRANE POWER CORE — SECTOR 9 YARD</dd></div>
+<div><dt>Opposition</dt><dd>KOMODO BREACH TEAM — 5 OPERATORS, CHARGE EQUIPPED</dd></div>
+<div><dt>Victory</dt><dd>FIRST TO 7 ROUNDS — ELIMINATION, DETONATION, DEFUSAL OR CLOCK</dd></div>
+<div><dt>Theater</dt><dd>GRID 6.21S 106.85E — WAREHOUSE B, MID YARD, EAST LANE</dd></div>
+</dl>
+<div id="mapBlock" class="panel clip">
+<div class="tag" style="margin-bottom: 6px;">Sector Schematic // Not to scale</div>
+<svg viewBox="0 0 500 118" width="100%" height="118" aria-label="Sector 9 schematic">
+<rect x="4" y="4" width="492" height="110" fill="none" stroke="rgba(201,177,140,0.35)" stroke-width="1"/>
+<rect x="18" y="22" width="120" height="74" fill="rgba(201,177,140,0.07)" stroke="#c9b18c" stroke-width="1"/>
+<text x="26" y="38" fill="#c9b18c" font-size="9">WAREHOUSE B</text>
+<rect x="150" y="52" width="120" height="14" fill="rgba(201,177,140,0.05)" stroke="rgba(201,177,140,0.5)" stroke-width="1"/>
+<text x="158" y="48" fill="#9a968a" font-size="9">CATWALK</text>
+<text x="176" y="88" fill="#9a968a" font-size="9">MID YARD</text>
+<rect x="330" y="18" width="140" height="82" fill="rgba(62,201,167,0.05)" stroke="#3ec9a7" stroke-width="1"/>
+<text x="340" y="34" fill="#3ec9a7" font-size="9">SECTOR 9 — SITE</text>
+<circle cx="400" cy="62" r="7" fill="none" stroke="#ff8c1a" stroke-width="2"/>
+<circle cx="400" cy="62" r="2" fill="#ff8c1a"/>
+<text x="340" y="90" fill="#9a968a" font-size="8.5">CRANE POWER CORE</text>
+<path d="M 84 104 L 190 66 L 330 60" fill="none" stroke="#ff6a4d" stroke-width="1.4" stroke-dasharray="5 4"/>
+<path d="M 84 104 L 210 96 L 336 84" fill="none" stroke="#ff6a4d" stroke-width="1.4" stroke-dasharray="5 4"/>
+<path d="M 400 100 L 400 74" fill="none" stroke="#3ec9a7" stroke-width="1.4"/>
+<polygon points="78,98 90,104 78,110" fill="#ff6a4d"/>
+<text x="52" y="92" fill="#ff6a4d" font-size="8.5">KOMODO</text>
+<polygon points="394,106 406,106 400,96" fill="#3ec9a7"/>
+<text x="412" y="108" fill="#3ec9a7" font-size="8.5">GARUDA</text>
+</svg>
+</div>
+<div id="units">
+<div class="unit panel clip" id="unitG"><div class="insignia">G</div><div><div class="uname">GARUDA</div><div class="urole">DEFEND — YOUR UNIT</div></div></div>
+<div class="unit panel clip" id="unitK"><div class="insignia">K</div><div><div class="uname">KOMODO</div><div class="urole">ASSAULT — HOSTILE</div></div></div>
+</div>
+<button id="menuBtn">Deploy</button>
+</div>
+<div id="controls">
+<b>WASD</b> MOVE · <b>MOUSE</b> AIM · <b>LMB</b> FIRE · <b>SHIFT</b> SPRINT · <b>CTRL/C</b> CROUCH · <b>SPACE</b> JUMP<br>
+<b>R</b> RELOAD · <b>1–4 / WHEEL</b> WEAPONS · <b>RMB</b> AIM / SCOPE · <b>B</b> ARMORY · <b>E</b> HOLD TO DEFUSE · <b>TAB</b> SCOREBOARD
+</div>
+
+</div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
